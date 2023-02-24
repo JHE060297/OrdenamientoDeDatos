@@ -91,7 +91,7 @@ public class NumerosVista extends JFrame implements ActionListener {
 
     }
 
-    private File examinarArchivo(JTextField ruta) {
+    private File examinarArchivo(JTextField txtRuta) {
         JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto", EXTENSION_ARCHIVO));
@@ -99,12 +99,13 @@ public class NumerosVista extends JFrame implements ActionListener {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File archivo = chooser.getSelectedFile();
             if (archivo != null && archivo.isFile() && archivo.getName().endsWith(EXTENSION_ARCHIVO)) {
-                ruta.setText(archivo.getAbsolutePath());
+                txtRuta.setText(archivo.getAbsolutePath());
                 return archivo;
             } else {
                 JOptionPane.showMessageDialog(null, ARCHIVO_INVALIDO, ARCHIVO_INVALIDO, JOptionPane.ERROR_MESSAGE);
             }
         }
+
         return null;
     }
 
@@ -116,10 +117,11 @@ public class NumerosVista extends JFrame implements ActionListener {
 
         if (e.getSource() == botonOrdenarMergeSortAscendente) {
             try {
-                modelo.leerNumerosDesdeArchivo(ruta.getAbsolutePath());
+                modelo.leerNumerosDesdeArchivo(txtRuta.getText());
                 modelo.ordenarNumerosMergeAscendente();
-                modelo.escribirNumerosEnArchivo(ruta.getAbsolutePath() + "_Ordenados.txt");
-                lblRutaGuardado.setText(ruta.getAbsolutePath() + "_Ordenados.txt");
+                String nombreArchivoOrdenado = txtRuta.getText().substring(0, txtRuta.getText().lastIndexOf("."))+ "Ordenados.txt";
+                modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
+                lblRutaGuardado.setText(nombreArchivoOrdenado);
                 JOptionPane.showMessageDialog(null, "Se ha ordenado correctamente.", "Ordenamiento",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
