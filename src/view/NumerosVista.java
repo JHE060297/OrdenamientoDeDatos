@@ -41,7 +41,7 @@ public class NumerosVista extends JFrame implements ActionListener {
 
   private void iniciarComponentes() {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setTitle("Ordenamiento De Datos");
+    setTitle("Ordenamiento de Datos");
     setSize(480, 186);
     setLocationRelativeTo(null);
     panelContenido = new JPanel();
@@ -53,7 +53,7 @@ public class NumerosVista extends JFrame implements ActionListener {
     panelTitulo.setBounds(0, 0, 464, 47);
     panelContenido.add(panelTitulo);
 
-    lblTitulo = new JLabel("Ordenamiento De Datos");
+    lblTitulo = new JLabel("Ordenamiento de Datos");
     lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 35));
     lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
     panelTitulo.add(lblTitulo);
