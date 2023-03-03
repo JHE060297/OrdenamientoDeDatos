@@ -16,6 +16,7 @@ public class NumerosVista extends JFrame implements ActionListener {
   private static final String EXTENSION_ARCHIVO = "txt";
   private static final String ARCHIVO_INVALIDO = "Nombre de archivo invalido";
   private static final String MENSAJE_EXITOSO = "Se ha ordenado correctamente";
+  private static final String[] OPCIONES = {"QuickSort", "ShellSort"};
 
   private NumerosModel modelo;
   private File archivoSeleccionado;
@@ -28,9 +29,11 @@ public class NumerosVista extends JFrame implements ActionListener {
   private JLabel lblRutaGuardado;
 
   private JButton botonExaminarArchivo;
-  private JButton botonOrdenarMergeSortAscendente;
-  private JButton botonOrdenarMergeSortDescendente;
+  private JButton botonOrdenarAscendente;
+  private JButton botonOrdenarDescendente;
   private JButton btnAbrir;
+
+  private JComboBox<String> comboBox;
 
   private JTextField txtRuta;
 
@@ -41,8 +44,8 @@ public class NumerosVista extends JFrame implements ActionListener {
 
   private void iniciarComponentes() {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setTitle("Ordenamiento de Datos");
-    setSize(480, 186);
+    setTitle("Ordenamiento de datos");
+    setSize(480, 225);
     setLocationRelativeTo(null);
     panelContenido = new JPanel();
     panelContenido.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -53,7 +56,7 @@ public class NumerosVista extends JFrame implements ActionListener {
     panelTitulo.setBounds(0, 0, 464, 47);
     panelContenido.add(panelTitulo);
 
-    lblTitulo = new JLabel("Ordenamiento de Datos");
+    lblTitulo = new JLabel("Ordenamiento de datos");
     lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 35));
     lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
     panelTitulo.add(lblTitulo);
@@ -68,15 +71,19 @@ public class NumerosVista extends JFrame implements ActionListener {
     botonExaminarArchivo.addActionListener(this);
     panelContenido.add(botonExaminarArchivo);
 
-    botonOrdenarMergeSortAscendente = new JButton("MergeSortAscendente");
-    botonOrdenarMergeSortAscendente.setBounds(5, 111, 175, 25);
-    botonOrdenarMergeSortAscendente.addActionListener(this);
-    panelContenido.add(botonOrdenarMergeSortAscendente);
+    comboBox = new JComboBox<>(OPCIONES);
+    comboBox.setBounds(125,115,100,25);
+    panelContenido.add(comboBox);
 
-    botonOrdenarMergeSortDescendente = new JButton("MergeSort Descendente");
-    botonOrdenarMergeSortDescendente.setBounds(185, 111, 175, 25);
-    botonOrdenarMergeSortDescendente.addActionListener(this);
-    panelContenido.add(botonOrdenarMergeSortDescendente);
+    botonOrdenarAscendente = new JButton("Ascendente");
+    botonOrdenarAscendente.setBounds(5, 150, 175, 25);
+    botonOrdenarAscendente.addActionListener(this);
+    panelContenido.add(botonOrdenarAscendente);
+
+    botonOrdenarDescendente = new JButton("Descendente");
+    botonOrdenarDescendente.setBounds(185, 150, 175, 25);
+    botonOrdenarDescendente.addActionListener(this);
+    panelContenido.add(botonOrdenarDescendente);
 
     lblRutaGuardado = new JLabel("");
     lblRutaGuardado.setBounds(10, 83, 355, 25);
@@ -123,18 +130,18 @@ public class NumerosVista extends JFrame implements ActionListener {
       archivoSeleccionado = examinarArchivo(txtRuta);
     }
 
-    if (e.getSource() == botonOrdenarMergeSortAscendente) {
+    if (e.getSource() == botonOrdenarAscendente) {
       try {
         modelo.leerNumerosDesdeArchivo(txtRuta.getText());
-        modelo.ordenarNumerosMergeAscendente();
+        modelo.ordenarNumerosQuickSort(true);
         String nombreArchivoOrdenado =
           txtRuta.getText().substring(0, txtRuta.getText().lastIndexOf(".")) +
-          "Ordenados.txt";
+          "Ordenados Ascendentemente.txt";
         modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
         lblRutaGuardado.setText(nombreArchivoOrdenado);
         JOptionPane.showMessageDialog(
           null,
-          "Se ha ordenado correctamente.",
+          MENSAJE_EXITOSO,
           "Ordenamiento",
           JOptionPane.INFORMATION_MESSAGE
         );
@@ -143,16 +150,18 @@ public class NumerosVista extends JFrame implements ActionListener {
       }
     }
 
-    if (e.getSource() == botonOrdenarMergeSortDescendente) {
+    if (e.getSource() == botonOrdenarDescendente) {
       try {
-        modelo.leerNumerosDesdeArchivo(ruta.getAbsolutePath());
-        modelo.ordenarNumerosMergeDescendente();
-        modelo.escribirNumerosEnArchivo(
-          ruta.getAbsolutePath() + "_Ordenados.txt"
-        );
+        modelo.leerNumerosDesdeArchivo(txtRuta.getText());
+        modelo.ordenarNumerosQuickSort(false);
+        String nombreArchivoOrdenado =
+          txtRuta.getText().substring(0, txtRuta.getText().lastIndexOf(".")) +
+          "Ordenados descendentemente.txt";
+        modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
+        lblRutaGuardado.setText(nombreArchivoOrdenado);
         JOptionPane.showMessageDialog(
           null,
-          "Se ha ordenado correctamente.",
+          MENSAJE_EXITOSO,
           "Ordenamiento",
           JOptionPane.INFORMATION_MESSAGE
         );
