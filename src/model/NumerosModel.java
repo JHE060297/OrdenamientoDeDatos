@@ -35,8 +35,6 @@ public class NumerosModel {
     escritor.close();
   }
 
-  // Metodo de Ordenamiento Shell 
-
   private void quickSort(
     int[] array,
     int izquierda,
@@ -77,8 +75,6 @@ public class NumerosModel {
   public void ordenarNumerosQuickSort(boolean ascendente) {
     quickSort(this.numeros, 0, this.numeros.length - 1, ascendente);
   }
-
-  // Metodo de Ordenamiento Shell 
 
   private void shellSort(int[] array, boolean ascendente) {
     int n = array.length;
