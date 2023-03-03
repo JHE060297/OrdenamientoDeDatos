@@ -8,162 +8,71 @@ import java.util.ArrayList;
 
 public class NumerosModel {
 
-    private int[] numeros;
+  private int[] numeros;
 
-    public NumerosModel() {
+  public NumerosModel() {}
 
+  public void leerNumerosDesdeArchivo(String archivo) throws IOException {
+    BufferedReader lector = new BufferedReader(new FileReader(archivo));
+    String linea = lector.readLine();
+    ArrayList<Integer> numerosLista = new ArrayList<>();
+    while (linea != null) {
+      numerosLista.add(Integer.parseInt(linea));
+      linea = lector.readLine();
     }
-
-    public void leerNumerosDesdeArchivo(String archivo) throws IOException {
-        BufferedReader lector = new BufferedReader(new FileReader(archivo));
-        String linea = lector.readLine();
-        ArrayList<Integer> numerosLista = new ArrayList<>();
-        while (linea != null) {
-            numerosLista.add(Integer.parseInt(linea));
-            linea = lector.readLine();
-        }
-        lector.close();
-        this.numeros = new int[numerosLista.size()];
-        for (int i = 0; i < numerosLista.size(); i++) {
-            this.numeros[i] = numerosLista.get(i);
-
-        }
+    lector.close();
+    this.numeros = new int[numerosLista.size()];
+    for (int i = 0; i < numerosLista.size(); i++) {
+      this.numeros[i] = numerosLista.get(i);
     }
+  }
 
-    /*
-     * Metodo de Ordenamiento MergeSort Ascendente - Divide y venceras
-     */
-
-    private void mergeSortAscendente(int[] arr, int l, int r) {
-        if (l < r) {
-            int m = l + (r - l) / 2;
-            mergeSortAscendente(arr, l, m);
-            mergeSortAscendente(arr, m + 1, r);
-            mergeAscendente(arr, l, m, r);
-        }
+  public void escribirNumerosEnArchivo(String archivo) throws IOException {
+    FileWriter escritor = new FileWriter(archivo);
+    for (int i = 0; i < this.numeros.length; i++) {
+      escritor.write(String.valueOf(this.numeros[i] + "\n"));
     }
+    escritor.close();
+  }
 
-    private void mergeAscendente(int[] arr, int l, int m, int r) {
-        int nl = m - l + 1;
-        int nr = r - m;
-        int[] left = new int[nl];
-        int[] right = new int[nr];
-        for (int i = 0; i < nl; i++) {
-            left[i] = arr[l + i];
-        }
-        for (int j = 0; j < nr; j++) {
-            right[j] = arr[m + 1 + j];
-        }
-        int i = 0, j = 0, k = l;
-        while (i < nl && j < nr) {
-            if (left[i] <= right[j]) {
-                arr[k] = left[i];
-                i++;
-            } else {
-                arr[k] = right[j];
-                j++;
-            }
-            k++;
-        }
-        while (i < nl) {
-            arr[k] = left[i];
-            i++;
-            k++;
-        }
-        while (j < nr) {
-            arr[k] = right[j];
-            j++;
-            k++;
-        }
+  private void quickSort(
+    int[] array,
+    int izquierda,
+    int derecha,
+    boolean ascendeten
+  ) {
+    if (izquierda < derecha) {
+      int pivote = particion(array, izquierda, derecha, ascendeten);
+      quickSort(array, izquierda, pivote - 1, ascendeten);
+      quickSort(array, pivote + 1, derecha, ascendeten);
     }
+  }
 
-    /*
-     * Ordenamiento descendente
-     */
-
-    private void mergeSortDescendente(int[] arr, int l, int r) {
-        if (l < r) {
-            int m = l + (r - l) / 2;
-            mergeSortDescendente(arr, l, m);
-            mergeSortDescendente(arr, m + 1, r);
-            mergeDescendente(arr, l, m, r);
-        }
+  private int particion(
+    int[] array,
+    int izquierda,
+    int derecha,
+    boolean ascendente
+  ) {
+    int pivote = array[derecha];
+    int i = izquierda - 1;
+    for (int j = izquierda; j < derecha; j++) {
+      if (
+        (ascendente && array[j] < pivote) || (!ascendente && array[j] > pivote)
+      ) {
+        i++;
+        int temporal = array[i];
+        array[i] = array[j];
+        array[j] = temporal;
+      }
     }
+    int temporal = array[i + 1];
+    array[i + 1] = array[derecha];
+    array[derecha] = temporal;
+    return i + 1;
+  }
 
-    private void mergeDescendente(int[] arr, int l, int m, int r) {
-        int nl = m - l + 1;
-        int nr = r - m;
-        int[] left = new int[nl];
-        int[] right = new int[nr];
-        for (int i = 0; i < nl; i++) {
-            left[i] = arr[l + i];
-        }
-        for (int j = 0; j < nr; j++) {
-            right[j] = arr[m + 1 + j];
-        }
-        int i = 0, j = 0, k = l;
-        while (i < nl && j < nr) {
-            if (left[i] >= right[j]) {
-                arr[k] = left[i];
-                i++;
-            } else {
-                arr[k] = right[j];
-                j++;
-            }
-            k++;
-        }
-        while (i < nl) {
-            arr[k] = left[i];
-            i++;
-            k++;
-        }
-        while (j < nr) {
-            arr[k] = right[j];
-            j++;
-            k++;
-        }
-    }
-    /*
-     * Metodo burbuja
-     */
-
-    public void ordernarNumerosBurbuja(boolean ascendente) {
-        int n = numeros.length;
-        int temp = 0;
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 1; j < (n - i); j++) {
-                if (ascendente) {
-                    if (numeros[j - 1] > numeros[j]) {
-                        temp = numeros[j - 1];
-                        numeros[j - 1] = numeros[j];
-                        numeros[j] = temp;
-                    }
-                } else {
-                    if (numeros[j - 1] < numeros[j]) {
-                        temp = numeros[j - 1];
-                        numeros[j - 1] = numeros[j];
-                        numeros[j] = temp;
-                    }
-                }
-            }
-        }
-    }
-
-    public void ordenarNumerosMergeAscendente() {
-        mergeSortAscendente(this.numeros, 0, this.numeros.length - 1);
-    }
-
-    public void ordenarNumerosMergeDescendente() {
-        mergeSortDescendente(this.numeros, 0, this.numeros.length - 1);
-    }
-
-    public void escribirNumerosEnArchivo(String archivo) throws IOException {
-        FileWriter escritor = new FileWriter(archivo);
-        for (int i = 0; i < this.numeros.length; i++) {
-            escritor.write(String.valueOf(this.numeros[i] + "\n"));
-        }
-        escritor.close();
-    }
-
+  public void ordenarNumerosQuickSort(boolean ascendente) {
+    quickSort(this.numeros, 0, this.numeros.length - 1, ascendente);
+  }
 }
