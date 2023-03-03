@@ -16,7 +16,7 @@ public class NumerosVista extends JFrame implements ActionListener {
   private static final String EXTENSION_ARCHIVO = "txt";
   private static final String ARCHIVO_INVALIDO = "Nombre de archivo invalido";
   private static final String MENSAJE_EXITOSO = "Se ha ordenado correctamente";
-  private static final String[] OPCIONES = {"QuickSort", "ShellSort"};
+  private static final String[] OPCIONES = { "QuickSort", "ShellSort" };
 
   private NumerosModel modelo;
   private File archivoSeleccionado;
@@ -72,7 +72,7 @@ public class NumerosVista extends JFrame implements ActionListener {
     panelContenido.add(botonExaminarArchivo);
 
     comboBox = new JComboBox<>(OPCIONES);
-    comboBox.setBounds(125,115,100,25);
+    comboBox.setBounds(125, 115, 100, 25);
     panelContenido.add(comboBox);
 
     botonOrdenarAscendente = new JButton("Ascendente");
@@ -131,42 +131,61 @@ public class NumerosVista extends JFrame implements ActionListener {
     }
 
     if (e.getSource() == botonOrdenarAscendente) {
-      try {
-        modelo.leerNumerosDesdeArchivo(txtRuta.getText());
-        modelo.ordenarNumerosQuickSort(true);
-        String nombreArchivoOrdenado =
-          txtRuta.getText().substring(0, txtRuta.getText().lastIndexOf(".")) +
-          "Ordenados Ascendentemente.txt";
-        modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
-        lblRutaGuardado.setText(nombreArchivoOrdenado);
-        JOptionPane.showMessageDialog(
-          null,
-          MENSAJE_EXITOSO,
-          "Ordenamiento",
-          JOptionPane.INFORMATION_MESSAGE
-        );
-      } catch (IOException ex) {
-        ex.printStackTrace();
+      String opcionSeleccionada = (String) comboBox.getSelectedItem();
+      switch (opcionSeleccionada) {
+        case "QuickSort":
+          try {
+            modelo.leerNumerosDesdeArchivo(txtRuta.getText());
+            modelo.ordenarNumerosQuickSort(true);
+            String nombreArchivoOrdenado =
+              txtRuta
+                .getText()
+                .substring(0, txtRuta.getText().lastIndexOf(".")) +
+              "Ordenados Ascendentemente.txt";
+            modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
+            lblRutaGuardado.setText(nombreArchivoOrdenado);
+            JOptionPane.showMessageDialog(
+              null,
+              MENSAJE_EXITOSO,
+              "Ordenamiento",
+              JOptionPane.INFORMATION_MESSAGE
+            );
+          } catch (IOException ex) {
+            ex.printStackTrace();
+          }
+          break;
+        case "ShellSort":
+          // LOGICA
+          break;
       }
     }
 
     if (e.getSource() == botonOrdenarDescendente) {
-      try {
-        modelo.leerNumerosDesdeArchivo(txtRuta.getText());
-        modelo.ordenarNumerosQuickSort(false);
-        String nombreArchivoOrdenado =
-          txtRuta.getText().substring(0, txtRuta.getText().lastIndexOf(".")) +
-          "Ordenados descendentemente.txt";
-        modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
-        lblRutaGuardado.setText(nombreArchivoOrdenado);
-        JOptionPane.showMessageDialog(
-          null,
-          MENSAJE_EXITOSO,
-          "Ordenamiento",
-          JOptionPane.INFORMATION_MESSAGE
-        );
-      } catch (IOException ex) {
-        ex.printStackTrace();
+      String opcionSeleccionada = (String) comboBox.getSelectedItem();
+      switch (opcionSeleccionada) {
+        case "QuickSort":
+          try {
+            modelo.leerNumerosDesdeArchivo(txtRuta.getText());
+            modelo.ordenarNumerosQuickSort(false);
+            String nombreArchivoOrdenado =
+              txtRuta
+                .getText()
+                .substring(0, txtRuta.getText().lastIndexOf(".")) +
+              "Ordenados descendentemente.txt";
+            modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
+            lblRutaGuardado.setText(nombreArchivoOrdenado);
+            JOptionPane.showMessageDialog(
+              null,
+              MENSAJE_EXITOSO,
+              "Ordenamiento",
+              JOptionPane.INFORMATION_MESSAGE
+            );
+          } catch (IOException ex) {
+            ex.printStackTrace();
+          }
+          break;
+          case "ShellSort":
+          break;
       }
     }
 
