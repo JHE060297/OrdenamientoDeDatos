@@ -155,7 +155,25 @@ public class NumerosVista extends JFrame implements ActionListener {
           }
           break;
         case "ShellSort":
-          // LOGICA
+          try {
+            modelo.leerNumerosDesdeArchivo(txtRuta.getText());
+            modelo.ordenarNumerosShellSort(true);
+            String nombreArchivoOrdenado =
+              txtRuta
+                .getText()
+                .substring(0, txtRuta.getText().lastIndexOf(".")) +
+              "Ordenados Ascendentemente.txt";
+            modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
+            lblRutaGuardado.setText(nombreArchivoOrdenado);
+            JOptionPane.showMessageDialog(
+              null,
+              MENSAJE_EXITOSO,
+              "Ordenamiento",
+              JOptionPane.INFORMATION_MESSAGE
+            );
+          } catch (IOException ex) {
+            ex.printStackTrace();
+          }
           break;
       }
     }
@@ -184,7 +202,27 @@ public class NumerosVista extends JFrame implements ActionListener {
             ex.printStackTrace();
           }
           break;
-          case "ShellSort":
+        case "ShellSort":
+          try {
+            modelo.leerNumerosDesdeArchivo(txtRuta.getText());
+            modelo.ordenarNumerosShellSort(false);
+            String nombreArchivoOrdenado =
+              txtRuta
+                .getText()
+                .substring(0, txtRuta.getText().lastIndexOf(".")) +
+              "Ordenados descendentemente.txt";
+            modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
+            lblRutaGuardado.setText(nombreArchivoOrdenado);
+            JOptionPane.showMessageDialog(
+              null,
+              MENSAJE_EXITOSO,
+              "Ordenamiento",
+              JOptionPane.INFORMATION_MESSAGE
+            );
+          } catch (IOException ex) {
+            ex.printStackTrace();
+          }
+
           break;
       }
     }
