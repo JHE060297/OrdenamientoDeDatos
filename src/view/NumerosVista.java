@@ -18,6 +18,8 @@ public class NumerosVista extends JFrame implements ActionListener {
   private static final String MENSAJE_EXITOSO = "Se ha ordenado correctamente";
   private static final String[] OPCIONES = { "QuickSort", "ShellSort" };
 
+  private Desktop desktop;
+
   private NumerosModel modelo;
   private File archivoSeleccionado;
   private File ruta;
@@ -29,9 +31,9 @@ public class NumerosVista extends JFrame implements ActionListener {
   private JLabel lblRutaGuardado;
 
   private JButton botonExaminarArchivo;
-  private JButton botonOrdenarAscendente;
-  private JButton botonOrdenarDescendente;
-  private JButton btnAbrir;
+  private JButton botonOrdenarAscendentemente;
+  private JButton botonOrdenarDescendentemente;
+  private JButton botonAbrirArchivo;
 
   private JComboBox<String> comboBox;
 
@@ -39,6 +41,7 @@ public class NumerosVista extends JFrame implements ActionListener {
 
   public NumerosVista() {
     modelo = new NumerosModel();
+    desktop = Desktop.getDesktop();
     iniciarComponentes();
   }
 
@@ -75,49 +78,45 @@ public class NumerosVista extends JFrame implements ActionListener {
     comboBox.setBounds(125, 115, 100, 25);
     panelContenido.add(comboBox);
 
-    botonOrdenarAscendente = new JButton("Ascendente");
-    botonOrdenarAscendente.setBounds(5, 150, 175, 25);
-    botonOrdenarAscendente.addActionListener(this);
-    panelContenido.add(botonOrdenarAscendente);
+    botonOrdenarAscendentemente = new JButton("Ascendente");
+    botonOrdenarAscendentemente.setBounds(5, 150, 175, 25);
+    botonOrdenarAscendentemente.addActionListener(this);
+    panelContenido.add(botonOrdenarAscendentemente);
 
-    botonOrdenarDescendente = new JButton("Descendente");
-    botonOrdenarDescendente.setBounds(185, 150, 175, 25);
-    botonOrdenarDescendente.addActionListener(this);
-    panelContenido.add(botonOrdenarDescendente);
+    botonOrdenarDescendentemente = new JButton("Descendente");
+    botonOrdenarDescendentemente.setBounds(185, 150, 175, 25);
+    botonOrdenarDescendentemente.addActionListener(this);
+    panelContenido.add(botonOrdenarDescendentemente);
 
     lblRutaGuardado = new JLabel("");
     lblRutaGuardado.setBounds(10, 83, 355, 25);
     panelContenido.add(lblRutaGuardado);
 
-    btnAbrir = new JButton("Abrir");
-    btnAbrir.setBounds(368, 84, 89, 25);
-    btnAbrir.addActionListener(this);
-    panelContenido.add(btnAbrir);
+    botonAbrirArchivo = new JButton("Abrir");
+    botonAbrirArchivo.setBounds(368, 84, 89, 25);
+    botonAbrirArchivo.addActionListener(this);
+    panelContenido.add(botonAbrirArchivo);
   }
 
   private File examinarArchivo(JTextField txtRuta) {
     JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
     chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     chooser.setFileFilter(
-      new FileNameExtensionFilter("Archivos de texto", EXTENSION_ARCHIVO)
-    );
+        new FileNameExtensionFilter("Archivos de texto", EXTENSION_ARCHIVO));
     int returnVal = chooser.showOpenDialog(botonExaminarArchivo);
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       File archivo = chooser.getSelectedFile();
-      if (
-        archivo != null &&
-        archivo.isFile() &&
-        archivo.getName().endsWith(EXTENSION_ARCHIVO)
-      ) {
+      if (archivo != null &&
+          archivo.isFile() &&
+          archivo.getName().endsWith(EXTENSION_ARCHIVO)) {
         txtRuta.setText(archivo.getAbsolutePath());
         return archivo;
       } else {
         JOptionPane.showMessageDialog(
-          null,
-          ARCHIVO_INVALIDO,
-          ARCHIVO_INVALIDO,
-          JOptionPane.ERROR_MESSAGE
-        );
+            null,
+            ARCHIVO_INVALIDO,
+            ARCHIVO_INVALIDO,
+            JOptionPane.ERROR_MESSAGE);
       }
     }
 
@@ -130,26 +129,24 @@ public class NumerosVista extends JFrame implements ActionListener {
       archivoSeleccionado = examinarArchivo(txtRuta);
     }
 
-    if (e.getSource() == botonOrdenarAscendente) {
+    if (e.getSource() == botonOrdenarAscendentemente) {
       String opcionSeleccionada = (String) comboBox.getSelectedItem();
       switch (opcionSeleccionada) {
         case "QuickSort":
           try {
             modelo.leerNumerosDesdeArchivo(txtRuta.getText());
             modelo.ordenarNumerosQuickSort(true);
-            String nombreArchivoOrdenado =
-              txtRuta
+            String nombreArchivoOrdenado = txtRuta
                 .getText()
                 .substring(0, txtRuta.getText().lastIndexOf(".")) +
-              "Ordenados Ascendentemente.txt";
+                "Ordenados Ascendentemente.txt";
             modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
             lblRutaGuardado.setText(nombreArchivoOrdenado);
             JOptionPane.showMessageDialog(
-              null,
-              MENSAJE_EXITOSO,
-              "Ordenamiento",
-              JOptionPane.INFORMATION_MESSAGE
-            );
+                null,
+                MENSAJE_EXITOSO,
+                "Ordenamiento",
+                JOptionPane.INFORMATION_MESSAGE);
           } catch (IOException ex) {
             ex.printStackTrace();
           }
@@ -158,19 +155,17 @@ public class NumerosVista extends JFrame implements ActionListener {
           try {
             modelo.leerNumerosDesdeArchivo(txtRuta.getText());
             modelo.ordenarNumerosShellSort(true);
-            String nombreArchivoOrdenado =
-              txtRuta
+            String nombreArchivoOrdenado = txtRuta
                 .getText()
                 .substring(0, txtRuta.getText().lastIndexOf(".")) +
-              "Ordenados Ascendentemente.txt";
+                "Ordenados Ascendentemente.txt";
             modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
             lblRutaGuardado.setText(nombreArchivoOrdenado);
             JOptionPane.showMessageDialog(
-              null,
-              MENSAJE_EXITOSO,
-              "Ordenamiento",
-              JOptionPane.INFORMATION_MESSAGE
-            );
+                null,
+                MENSAJE_EXITOSO,
+                "Ordenamiento",
+                JOptionPane.INFORMATION_MESSAGE);
           } catch (IOException ex) {
             ex.printStackTrace();
           }
@@ -178,26 +173,24 @@ public class NumerosVista extends JFrame implements ActionListener {
       }
     }
 
-    if (e.getSource() == botonOrdenarDescendente) {
+    if (e.getSource() == botonOrdenarDescendentemente) {
       String opcionSeleccionada = (String) comboBox.getSelectedItem();
       switch (opcionSeleccionada) {
         case "QuickSort":
           try {
             modelo.leerNumerosDesdeArchivo(txtRuta.getText());
             modelo.ordenarNumerosQuickSort(false);
-            String nombreArchivoOrdenado =
-              txtRuta
+            String nombreArchivoOrdenado = txtRuta
                 .getText()
                 .substring(0, txtRuta.getText().lastIndexOf(".")) +
-              "Ordenados descendentemente.txt";
+                "Ordenados descendentemente.txt";
             modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
             lblRutaGuardado.setText(nombreArchivoOrdenado);
             JOptionPane.showMessageDialog(
-              null,
-              MENSAJE_EXITOSO,
-              "Ordenamiento",
-              JOptionPane.INFORMATION_MESSAGE
-            );
+                null,
+                MENSAJE_EXITOSO,
+                "Ordenamiento",
+                JOptionPane.INFORMATION_MESSAGE);
           } catch (IOException ex) {
             ex.printStackTrace();
           }
@@ -206,19 +199,17 @@ public class NumerosVista extends JFrame implements ActionListener {
           try {
             modelo.leerNumerosDesdeArchivo(txtRuta.getText());
             modelo.ordenarNumerosShellSort(false);
-            String nombreArchivoOrdenado =
-              txtRuta
+            String nombreArchivoOrdenado = txtRuta
                 .getText()
                 .substring(0, txtRuta.getText().lastIndexOf(".")) +
-              "Ordenados descendentemente.txt";
+                "Ordenados descendentemente.txt";
             modelo.escribirNumerosEnArchivo(nombreArchivoOrdenado);
             lblRutaGuardado.setText(nombreArchivoOrdenado);
             JOptionPane.showMessageDialog(
-              null,
-              MENSAJE_EXITOSO,
-              "Ordenamiento",
-              JOptionPane.INFORMATION_MESSAGE
-            );
+                null,
+                MENSAJE_EXITOSO,
+                "Ordenamiento",
+                JOptionPane.INFORMATION_MESSAGE);
           } catch (IOException ex) {
             ex.printStackTrace();
           }
@@ -227,14 +218,11 @@ public class NumerosVista extends JFrame implements ActionListener {
       }
     }
 
-    if (e.getSource() == btnAbrir) {
-      if (Desktop.isDesktopSupported()) {
-        try {
-          File archivo = new File(ruta.getAbsolutePath() + "_Ordenados.txt");
-          Desktop.getDesktop().open(archivo);
-        } catch (IOException ex) {
-          ex.printStackTrace();
-        }
+    if (e.getSource() == botonAbrirArchivo) {
+      try {
+        desktop.open(archivoSeleccionado);
+      } catch (IOException ex) {
+        ex.printStackTrace();
       }
     }
   }
